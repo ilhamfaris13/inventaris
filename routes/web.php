@@ -18,9 +18,15 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+
+Route::get('/karyawan', function () {
+    return view('karyawan.index');
+});
+
 Route::get('/divisi', function () {
     return view('divisi.index');
 });
+
 
 Route::get('/dashboard', function () {
     return view('dashboard');
