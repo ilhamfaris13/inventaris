@@ -2,24 +2,40 @@
 
 @section('content')
 <div class="container">
-    <h2 class="mb-4">Edit Kategori</h2>
+    <h2 class="mb-4">Edit Divisi</h2>
 
-    <form action="{{ route('kategori.update', $kategori->id) }}" method="POST">
+    @if (session('success'))
+        <div class="alert alert-success">{{ session('success') }}</div>
+    @endif
+    @if (session('error'))
+        <div class="alert alert-danger">{{ session('error') }}</div>
+    @endif
+    @if ($errors->any())
+        <div class="alert alert-danger">
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
+
+    <form action="{{ route('divisi.update', $divisi->id) }}" method="POST">
         @csrf
         @method('PUT')
 
         <div class="mb-3">
-            <label for="nama_kategori" class="form-label">Nama Kategori</label>
-            <input type="text" name="nama_kategori" class="form-control" value="{{ $kategori->nama_kategori }}" required>
+            <label for="id" class="form-label">ID</label>
+            <input type="text" name="id" class="form-control" value="{{ $divisi->id }}" required readonly>
         </div>
 
         <div class="mb-3">
-            <label for="deskripsi" class="form-label">Deskripsi</label>
-            <textarea name="deskripsi" class="form-control">{{ $kategori->deskripsi }}</textarea>
+            <label for="kode_divisi" class="form-label">Kode Divisi</label>
+            <input type="text" name="kode_divisi" class="form-control" value="{{ $divisi->kode_divisi }}" required>
         </div>
 
         <button type="submit" class="btn btn-success">Update</button>
-        <a href="{{ route('kategori.index') }}" class="btn btn-secondary">Kembali</a>
+        <a href="{{ route('divisi.index') }}" class="btn btn-secondary">Kembali</a>
     </form>
 </div>
 @endsection
