@@ -18,13 +18,21 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/divisi', function () {
-    return view('divisi.index');
-});
 
 Route::get('/karyawan', function () {
     return view('karyawan.index');
 });
+
+Route::get('/divisi', function () {
+    return view('divisi.index');
+});
+
+
+Route::get('/karyawan', function () {
+    return view('karyawan.index');
+});
+=======
+
 
 Route::get('/dashboard', function () {
     return view('dashboard');
@@ -76,6 +84,7 @@ Route::delete('/kategori/{id}', [KategoriController::class, 'destroy'])->name('k
 | end-Kategori Routes
 |--------------------------------------------------------------------------
 */
+
 use App\Http\Controllers\DivisiController;
 
 Route::get('/divisi', [DivisiController::class, 'index'])->name('divisi.index');
@@ -94,3 +103,19 @@ Route::resource('/divisi', DivisiController::class)->except(['index', 'show', 'c
 |--------------------------------------------------------------------------
 */
 
+=======
+use App\Http\Controllers\KaryawanController;
+Route::get('/karyawan', [KaryawanController::class, 'index'])->name('karyawan.index');
+Route::get('/karyawan/create', [KaryawanController::class, 'create'])->name('karyawan.create');
+Route::post('/karyawan', [KaryawanController::class, 'store'])->name('karyawan.store');
+Route::get('/karyawan/{id}/edit', [KaryawanController::class, 'edit'])->name('karyawan.edit');
+Route::put('/karyawan/{id}', [KaryawanController::class, 'update'])->name('karyawan.update');
+Route::delete('/karyawan/{id}', [KaryawanController::class, 'destroy'])->name('karyawan.destroy');
+Route::get('/karyawan/{id}/print', [KaryawanController::class, 'print'])->name('karyawan.print');
+Route::get('/karyawan/{id}/pdf', [KaryawanController::class, 'pdf'])->name('karyawan.pdf');
+Route::get('/karyawan/{id}', [KaryawanController::class, 'show'])->name('karyawan.show');
+/*
+|--------------------------------------------------------------------------
+| end-Karyawan Routes
+|--------------------------------------------------------------------------
+*/

@@ -12,10 +12,11 @@ class KaryawanController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
-    {
-        //
-    }
+public function index()
+{
+    $karyawans = Karyawan::all(); // Fetch all data from the Karyawan model
+    return view('karyawan.index', compact('karyawans')); // Pass the data to the view
+}
 
     /**
      * Show the form for creating a new resource.
@@ -24,7 +25,7 @@ class KaryawanController extends Controller
      */
     public function create()
     {
-        //
+        return view('karyawan.create');
     }
 
     /**
@@ -35,7 +36,32 @@ class KaryawanController extends Controller
      */
     public function store(Request $request)
     {
-        //
+       // dd($request->all());
+       $validatedData = $request->validate([
+        'nama' => 'required|string|max:255',
+        'alamat' => 'nullable|string',
+        'tanggal_lahir' => 'required|date',
+        'posisi' => 'nullable|string',
+        'gaji' => 'required|numeric',
+        'tanggal_masuk' => 'required|date',
+    ]);
+    
+            //dd($request);
+            // Create a new karyawan instance and fill it with validated data
+            $karyawan = new Karyawan();
+            $karyawan->nama = $validatedData['nama'];
+            $karyawan->alamat = $validatedData['alamat'];
+            $karyawan->tanggal_lahir = $validatedData['tanggal_lahir'];
+            $karyawan->posisi = $validatedData['posisi'];
+            $karyawan->gaji = $validatedData['gaji'];
+            $karyawan->tanggal_masuk = $validatedData['tanggal_masuk'];
+            
+            // Save the karyawan instance to the database
+
+    Karyawan::create($validatedData);
+        
+        // Save the karyawan data to the database
+        return redirect()->route('karyawan.index')->with('success', 'Karyawan created successfully.');
     }
 
     /**
@@ -46,7 +72,7 @@ class KaryawanController extends Controller
      */
     public function show(Karyawan $karyawan)
     {
-        //
+        return view('karyawan.show', compact('karyawan'));
     }
 
     /**
@@ -55,9 +81,10 @@ class KaryawanController extends Controller
      * @param  \App\Models\Karyawan  $karyawan
      * @return \Illuminate\Http\Response
      */
-    public function edit(Karyawan $karyawan)
+    public function edit($id)
     {
-        //
+        $karyawan = Karyawan::findOrFail($id);
+        return view('karyawan.edit', compact('karyawan'));
     }
 
     /**
@@ -67,9 +94,23 @@ class KaryawanController extends Controller
      * @param  \App\Models\Karyawan  $karyawan
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Karyawan $karyawan)
+    public function update(Request $request, $id)
     {
-        //
+        // Validate and update the karyawan data
+        $karyawan = Karyawan::findOrFail($id);
+        $request->validate([
+            'nama' => 'required|string|max:100',
+            'jenis_kelamin' => 'required|in:Laki-laki,Perempuan',
+            'alamat' => 'required|string|max:255',
+            'tanggal_lahir' => 'required|date',
+            'posisi' => 'required|integer',
+            'gaji' => 'required|numeric',
+        ]);
+
+        //dd($request->all());
+        $karyawan->update($request->all());
+
+        return redirect()->route('karyawan.index')->with('success', 'Karyawan updated successfully.');
     }
 
     /**
@@ -78,8 +119,12 @@ class KaryawanController extends Controller
      * @param  \App\Models\Karyawan  $karyawan
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Karyawan $karyawan)
+    public function destroy($id)
     {
-        //
+    $karyawan = Karyawan::findOrFail($id);
+    $karyawan->delete();
+
+    return redirect()->route('karyawan.index')->with('success', 'Karyawan berhasil dihapus.');
     }
+
 }

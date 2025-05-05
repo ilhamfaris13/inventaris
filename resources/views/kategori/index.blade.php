@@ -27,6 +27,9 @@
                     <td>{{ $item->deskripsi ?? '-' }}</td>
                     <td>
                         <a href="{{ route('kategori.edit', $item->id) }}" class="btn btn-warning btn-sm">Edit</a>
+                        <form action="{{ route('kategori.show', $item->id) }}" method="GET" class="d-inline">
+                            @csrf
+                            <button type="submit" class="btn btn-info btn-sm">Detail</button>
                         
                         <form action="{{ route('kategori.destroy', $item->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Yakin ingin menghapus kategori ini?')">
                             @csrf
