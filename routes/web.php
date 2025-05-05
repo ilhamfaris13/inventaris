@@ -31,7 +31,7 @@ Route::get('/divisi', function () {
 Route::get('/karyawan', function () {
     return view('karyawan.index');
 });
-=======
+
 
 
 Route::get('/dashboard', function () {
@@ -103,7 +103,6 @@ Route::resource('/divisi', DivisiController::class)->except(['index', 'show', 'c
 |--------------------------------------------------------------------------
 */
 
-=======
 use App\Http\Controllers\KaryawanController;
 Route::get('/karyawan', [KaryawanController::class, 'index'])->name('karyawan.index');
 Route::get('/karyawan/create', [KaryawanController::class, 'create'])->name('karyawan.create');
