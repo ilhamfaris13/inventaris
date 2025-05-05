@@ -9,8 +9,14 @@ class Divisi extends Model
 {
     use HasFactory;
     protected $table = 'divisi';
-    protected $fillable = ['kode_divisi', 'nama_divisi', 'deskripsi'];
-
+    protected $fillable = [
+        'kode_divisi',
+        'nama_divisi',
+        'deskripsi',
+        'created_at',
+        'updated_at',
+    ];
+    protected $primaryKey = 'id';
     public function karyawan() {
         return $this->hasMany(Karyawan::class, 'posisi');
     }

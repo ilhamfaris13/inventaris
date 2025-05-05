@@ -22,6 +22,10 @@ Route::get('/divisi', function () {
     return view('divisi.index');
 });
 
+Route::get('/karyawan', function () {
+    return view('karyawan.index');
+});
+
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
@@ -72,3 +76,21 @@ Route::delete('/kategori/{id}', [KategoriController::class, 'destroy'])->name('k
 | end-Kategori Routes
 |--------------------------------------------------------------------------
 */
+use App\Http\Controllers\DivisiController;
+
+Route::get('/divisi', [DivisiController::class, 'index'])->name('divisi.index');
+Route::get('/divisi/create', [DivisiController::class, 'create'])->name('divisi.create');
+Route::post('/divisi', [DivisiController::class, 'store'])->name('divisi.store');
+Route::get('/divisi/{id}/edit', [DivisiController::class, 'edit'])->name('divisi.edit');
+Route::put('/divisi/{id}', [DivisiController::class, 'update'])->name('divisi.update');
+Route::delete('/divisi/{id}', [DivisiController::class, 'destroy'])->name('divisi.destroy');
+Route::get('/divisi/{id}/print', [DivisiController::class, 'print'])->name('divisi.print');
+Route::get('/divisi/{id}/pdf', [DivisiController::class, 'pdf'])->name('divisi.pdf');
+Route::get('/divisi/{id}/show', [DivisiController::class, 'show'])->name('divisi.show');
+Route::resource('/divisi', DivisiController::class)->except(['index', 'show', 'create', 'edit']);
+/*
+|--------------------------------------------------------------------------
+| end-Divisi Routes
+|--------------------------------------------------------------------------
+*/
+
