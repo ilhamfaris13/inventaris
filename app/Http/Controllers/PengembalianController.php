@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Pengembalian;
+use App\Models\Peminjaman;
 use Illuminate\Http\Request;
 
 class PengembalianController extends Controller
@@ -14,7 +15,9 @@ class PengembalianController extends Controller
      */
     public function index()
     {
-        //
+        $pengembalian = Pengembalian::with(['peminjaman.karyawan', 'peminjaman.barang'])->get();
+        return view('pengembalian.index', compact('pengembalian'));
+
     }
 
     /**
@@ -24,7 +27,9 @@ class PengembalianController extends Controller
      */
     public function create()
     {
-        //
+        $peminjamans = Peminjaman::all();
+        $pengembalian = Pengembalian::with(['karyawan', 'barang'])->get();
+        return view('pengembalian.create', compact('pengembalian', 'peminjamans'));
     }
 
     /**
@@ -35,7 +40,18 @@ class PengembalianController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'peminjaman_id' => 'required',
+            'tanggal_pengembalian' => 'required|date',
+            'kondisi_barang' => 'required|string|max:255',
+            'keterangan' => 'nullable|string|max:255',
+        ]);
+
+        Pengembalian::create($request->all());
+
+        
+
+        return redirect()->route('pengembalian.index')->with('success', 'Data pengembalian berhasil ditambahkan!');
     }
 
     /**
@@ -46,7 +62,7 @@ class PengembalianController extends Controller
      */
     public function show(Pengembalian $pengembalian)
     {
-        //
+        return view('pengembalian.show', compact('pengembalian'));
     }
 
     /**
@@ -55,9 +71,10 @@ class PengembalianController extends Controller
      * @param  \App\Models\Pengembalian  $pengembalian
      * @return \Illuminate\Http\Response
      */
-    public function edit(Pengembalian $pengembalian)
+    public function edit($id)
     {
-        //
+        $pengembalian = Pengembalian::findOrFail($id);
+        return view('pengembalian.edit', compact('pengembalian'));
     }
 
     /**
@@ -67,10 +84,23 @@ class PengembalianController extends Controller
      * @param  \App\Models\Pengembalian  $pengembalian
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Pengembalian $pengembalian)
-    {
-        //
-    }
+    public function update(Request $request, $id)
+{
+    $pengembalian = Pengembalian::findOrFail($id);
+
+    $request->validate([
+        'tanggal_pengembalian' => 'required|date',
+        'kondisi_barang' => 'required|in:baik,rusak,hilang',
+        'keterangan' => 'nullable|string',
+    ]);
+
+    $pengembalian->update($request->only([
+        'tanggal_pengembalian', 'kondisi_barang', 'keterangan'
+    ]));
+
+    return redirect()->route('pengembalian.index')->with('success', 'Data berhasil diupdate.');
+}
+
 
     /**
      * Remove the specified resource from storage.
@@ -78,8 +108,11 @@ class PengembalianController extends Controller
      * @param  \App\Models\Pengembalian  $pengembalian
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Pengembalian $pengembalian)
+    public function destroy($id)
     {
-        //
+        $pengembalian = Pengembalian::findOrFail($id);
+        $pengembalian->delete();
+        
+        return redirect()->route('pengembalian.index')->with('success', 'Data pengembalian berhasil dihapus!');
     }
 }
