@@ -15,6 +15,7 @@
                 <th>Posisi</th>
                 <th>Gaji</th>
                 <th>Tanggal Masuk</th>
+                <th>Aksi</th>
             </tr>
         </thead>
         <tbody>
@@ -24,7 +25,7 @@
                     <td>{{ $karyawan->alamat }}</td>
                     <td>{{ $karyawan->tanggal_lahir }}</td>
                     <td>{{ $karyawan->posisi }}</td>
-                    <td>{{ $karyawan->gaji }}</td>
+                    <td>{{ number_format($karyawan->gaji, 0, ',', '.') }}</td>
                     <td>{{ $karyawan->tanggal_masuk }}</td>
                     <td>
                         <a href="{{ route('karyawan.edit', $karyawan->id) }}" class="btn btn-warning">Edit</a>

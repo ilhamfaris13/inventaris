@@ -1,9 +1,9 @@
 @extends('layouts.app')
 
 @section('content')
-
 <div class="container">
-    <h2 class="mb-4">Daftar Divisi</h2>
+    <h2 class="mb-4">Data Peminjaman</h2>
+
     <style>
     body {
       font-family: Arial, sans-serif;
@@ -60,10 +60,10 @@
       z-index: 999;
     }
   </style>
-</head>
+  </head>
 <body>
 
-  <form action="/divisi/import" method="POST" enctype="multipart/form-data"> 
+  <form action="/peminjaman/import" method="POST" enctype="multipart/form-data"> 
     {{ csrf_field() }}
     <input type="file" name="file" id="fileInput" style="visibility:hidden; position:absolute; left:-9999px;" required>
     <button type="button" id="importBtn" class="btn btn-success mb-3">Import</button>
@@ -82,7 +82,7 @@
     });
 </script>
 
-    <a href="{{ route('divisi.create') }}" class="btn btn-primary mb-3">Tambah Divisi</a>
+    <a href="{{ route('peminjaman.create') }}" class="btn btn-primary mb-3">Tambah Peminjaman</a>
 
     @if (session('success'))
         <div class="alert alert-success">{{ session('success') }}</div>
@@ -104,37 +104,43 @@
     
 
     <table class="table table-bordered">
-    <thead>
-        <tr>
-            <th style="background-color: rgb(205, 212, 219);">No</th>
-            <th style="background-color: rgb(205, 212, 219);">Kode Divisi</th>
-            <th style="background-color: rgb(205, 212, 219);">Nama Divisi</th>
-            <th style="background-color: rgb(205, 212, 219);">Deskripsi</th>
-            <th style="background-color: rgb(205, 212, 219);">Created At</th>
-            <th style="background-color: rgb(205, 212, 219);">Updated At</th>
-            <th style="background-color: rgb(205, 212, 219);">Aksi</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach ($divisi as $key => $item)
+        <thead>
             <tr>
-                <td>{{ $key + 1 }}</td>
-                <td>{{ $item->kode_divisi }}</td>
-                <td>{{ $item->nama_divisi }}</td>
-                <td>{{ $item->deskripsi ?? '-' }}</td>
-                <td>{{ $item->created_at ? $item->created_at->format('Y-m-d H:i:s') : '-' }}</td>
-                <td>{{ $item->updated_at ? $item->updated_at->format('Y-m-d H:i:s') : '-' }}</td>
-                <td>
-                    <a href="{{ route('divisi.edit', $item->id) }}" class="btn btn-warning btn-sm">Edit</a>
-                    <form action="{{ route('divisi.destroy', $item->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Yakin ingin menghapus divisi ini?')">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit" class="btn btn-danger btn-sm">Hapus</button>
-                    </form>
-                </td>
+                <th>No</th>
+                <th>Karyawan ID</th>
+                <th>Barang ID</th>
+                <th>Jumlah</th>
+                <th>Tanggal Pinjam</th>
+                <th>Tanggal Kembali</th>
+                <th>Status</th>
+                <th>Created At</th>
+                <th>Updated At</th>
+                <th>Aksi</th>
             </tr>
-        @endforeach
-    </tbody>
+        </thead>
+        <tbody>
+            @foreach ($peminjaman as $index => $pinjam)
+                <tr>
+                    <td>{{ $index + 1 }}</td>
+                    <td>{{ $pinjam->karyawan_id }}</td>
+                    <td>{{ $pinjam->barang_id }}</td>
+                    <td>{{ $pinjam->jumlah }}</td>
+                    <td>{{ $pinjam->tanggal_pinjam }}</td>
+                    <td>{{ $pinjam->tanggal_kembali }}</td>
+                    <td>{{ $pinjam->status }}</td>
+                    <td>{{ $pinjam->created_at }}</td>
+                    <td>{{ $pinjam->updated_at }}</td>
+                    <td>
+                        <a href="{{ route('peminjaman.edit', $pinjam->id) }}" class="btn btn-warning btn-sm">Edit</a>
+                        <form action="{{ route('peminjaman.destroy', $pinjam->id) }}" method="POST" style="display:inline-block;">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Apakah Anda yakin ingin menghapus data ini?')">Hapus</button>
+                        </form>
+                    </td>
+                </tr>
+            @endforeach
+        </tbody>
 </table>
 </div>
 @endsection

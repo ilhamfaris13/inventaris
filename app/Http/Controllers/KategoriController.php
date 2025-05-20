@@ -7,6 +7,11 @@ use App\Models\Kategori;
 
 class KategoriController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth'); // Middleware untuk memastikan pengguna terautentikasi
+    }
+
     public function index() {
         $kategori = Kategori::all();
         return view('kategori.index', compact('kategori'));
@@ -32,17 +37,26 @@ class KategoriController extends Controller
         return view('kategori.edit', compact('kategori'));
     }
 
-    public function update(Request $request, $id) {
-        $request->validate([
-            'nama_kategori' => 'required|max:50|unique:kategori,nama_kategori,' . $id,
-            'deskripsi' => 'nullable',
-        ]);
-
+    public function show($id) {
         $kategori = Kategori::findOrFail($id);
-        $kategori->update($request->all());
-
-        return redirect()->route('kategori.index')->with('success', 'Kategori berhasil diperbarui!');
+        return view('kategori.show', compact('kategori'));
     }
+    
+public function update(Request $request, $id)
+{
+    $request->validate([
+        'nama' => 'required|string|max:255', // Pastikan field nama wajib diisi
+        'deskripsi' => 'required|string',
+    ]);
+
+    $kategori = Kategori::findOrFail($id);
+    $kategori->update([
+        'nama' => $request->nama,
+        'deskripsi' => $request->deskripsi,
+    ]);
+
+    return redirect()->route('kategori.index')->with('success', 'Kategori berhasil diperbarui.');
+}
 
     public function destroy($id) {
         $kategori = Kategori::findOrFail($id);

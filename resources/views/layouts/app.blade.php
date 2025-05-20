@@ -29,6 +29,7 @@
   <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.39.0/css/tempusdominus-bootstrap-4.min.css" integrity="sha512-..." crossorigin="anonymous" referrerpolicy="no-referrer" />
   <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+  <link rel="stylesheet" href="{{ asset('dist/css/adminlte.min.css') }}">
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
 <div class="wrapper">
@@ -40,9 +41,9 @@
     <a href="index3.html" class="brand-link">
       <img src="{{ asset('dist/img/AdminLTELogo.png') }}" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"
            style="opacity: .8">
-      <span class="brand-text font-weight-light">AdminLTE 3</span>
+      <span class="brand-text font-weight-bold">AdminLTE 3</span>
     </a>
-
+    
     <!-- Sidebar -->
     <div class="sidebar">
       <!-- Sidebar user panel (optional) -->
@@ -51,7 +52,7 @@
           <img src="{{ asset('dist/img/user2-160x160.jpg') }}" class="img-circle elevation-2" alt="User Image">
         </div>
         <div class="info">
-          <a href="#" class="d-block">Alexander Pierce</a>
+            <a href="#" class="d-block">Alexander Pierce</a>
         </div>
       </div>
 
@@ -59,42 +60,60 @@
       <nav class="mt-2">
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
           <li class="nav-item has-treeview menu-open">
-            <a href="#" class="nav-link">
-              <i class="nav-icon fas fa-tachometer-alt"></i>
-              <p>
-                Data Master
-                <i class="right fas fa-angle-left"></i>
-              </p>
+        <a href="#" class="nav-link">
+            <i class="nav-icon fas fa-tachometer-alt"></i>
+          <p style="transition: color 0.3s;">
+            Data Master
+            <i class="right fas fa-angle-left"></i>
+          </p>
+        </a>
+        <ul class="nav nav-treeview">
+          <li class="nav-item">
+            <a href="{{ route('kategori.index') }}" class="nav-link">
+            <i class="far fa-circle nav-icon"></i>
+          <p style="transition: color 0.3s;">Kategori</p>
             </a>
-            <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <a href="./index.html" class="nav-link ">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Kategori</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="./index2.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Divisi</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="./index3.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Karyawan</p>
-                </a>
-              </li>
-            </ul>
           </li>
           <li class="nav-item">
-            <a href="pages/widgets.html" class="nav-link">
-              <i class="nav-icon fas fa-th"></i>
-              <p>
-                Barang
-                <span class="right badge badge-danger">New</span>
-              </p>
+            <a href="{{ route('divisi.index') }}" class="nav-link">
+            <i class="far fa-circle nav-icon"></i>
+          <p style="transition: color 0.3s;">Divisi</p>
             </a>
+          </li>
+          <li class="nav-item">
+            <a href="{{ route('karyawan.index') }}" class="nav-link">
+            <i class="far fa-circle nav-icon"></i>
+          <p style="transition: color 0.3s;">Karyawan</p>
+            </a>
+          </li>
+        </ul>
+          </li>
+          <li class="nav-item">
+        <a href="{{ route('barang.index') }}" class="nav-link">
+            <i class="nav-icon fas fa-th"></i>
+          <p style="transition: color 0.3s;">
+            Barang
+            <span class="right badge badge-danger">New</span>
+          </p>
+        </a>
+          </li>
+          <li class="nav-item">
+        <a href="{{ route('peminjaman.index') }}" class="nav-link">
+        <i class="nav-icon fas fa-th"></i>
+          <p style="transition: color 0.3s;">
+            Peminjaman
+            <span class="right badge badge-danger">New</span>
+          </p>
+        </a>
+          </li>
+          <li class="nav-item">
+        <a href="pages/widgets.html" class="nav-link">
+        <i class="nav-icon fas fa-th"></i>
+          <p style="transition: color 0.3s;">
+            Pengembalian
+            <span class="right badge badge-danger">New</span>
+          </p>
+        </a>
           </li>
         </ul>
       </nav>
@@ -105,6 +124,22 @@
 
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const sidebar = document.querySelector('.main-sidebar');
+        const toggleButton = document.getElementById('toggle-sidebar');
+
+        toggleButton.addEventListener('click', function () {
+            if (sidebar.classList.contains('sidebar-hidden')) {
+                sidebar.classList.remove('sidebar-hidden');
+                sidebar.classList.add('sidebar-visible');
+            } else {
+                sidebar.classList.remove('sidebar-visible');
+                sidebar.classList.add('sidebar-hidden');
+            }
+        });
+    });
+</script>
     <!-- Content Header (Page header) -->
     <div class="content-header">
       <div class="container-fluid">

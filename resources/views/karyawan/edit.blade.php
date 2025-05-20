@@ -41,6 +41,11 @@
             <input type="number" step="0.01" name="gaji" class="form-control" value="{{ old('gaji', $karyawan->gaji) }}" required>
         </div>
 
+        <div class="mb-3">
+            <label>Tanggal Masuk</label>
+            <input type="date" name="tanggal_masuk" class="form-control" value="{{ old('tanggal_masuk', $karyawan->tanggal_masuk) }}" required>
+        </div>
+
         <button type="submit" class="btn btn-success">Update</button>
         <a href="{{ route('karyawan.index') }}" class="btn btn-secondary">Batal</a>
     </form>
