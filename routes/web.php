@@ -122,6 +122,7 @@ Route::get('/karyawan/{id}', [KaryawanController::class, 'show'])->name('karyawa
 |--------------------------------------------------------------------------
 */
 
+
 use App\Http\Controllers\PeminjamanController;
 Route::resource('peminjaman', PeminjamanController::class);
 Route::get('/peminjaman/{id}/print', [PeminjamanController::class, 'print'])->name('peminjaman.print');
@@ -133,3 +134,16 @@ Route::post('/peminjaman/import', [PeminjamanController::class, 'import'])->name
 | end-Peminjaman Routes
 |--------------------------------------------------------------------------
 */
+
+use App\Http\Controllers\PengembalianController;
+Route::get('/pengembalian', [PengembalianController::class, 'index'])->name('pengembalian.index');
+Route::get('/pengembalian/create', [PengembalianController::class, 'create'])->name('pengembalian.create');
+Route::post('/pengembalian', [PengembalianController::class, 'store'])->name('pengembalian.store');
+Route::get('/pengembalian/{id}/edit', [PengembalianController::class, 'edit'])->name('pengembalian.edit');
+Route::put('/pengembalian/{id}', [PengembalianController::class, 'update'])->name('pengembalian.update');
+Route::delete('/pengembalian/{id}', [PengembalianController::class, 'destroy'])->name('pengembalian.destroy');
+Route::get('/pengembalian/{id}/print', [PengembalianController::class, 'print'])->name('pengembalian.print');
+Route::get('/pengembalian/{id}/pdf', [PengembalianController::class, 'pdf'])->name('pengembalian.pdf');
+Route::get('/pengembalian/{id}', [PengembalianController::class, 'show'])->name('pengembalian.show');
+Route::resource('/pengembalian', PengembalianController::class)->except(['index', 'show', 'create', 'edit']);
+
