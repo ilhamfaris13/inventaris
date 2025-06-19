@@ -14,6 +14,11 @@ class BarangController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    public function __construct()
+    {
+        $this->middleware('auth'); // Middleware untuk memastikan pengguna terautentikasi
+    }
+
     public function index()
     {
         // Mengambil data barang dengan relasi kategori dan divisi

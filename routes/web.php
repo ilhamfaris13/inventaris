@@ -27,7 +27,6 @@ Route::get('/divisi', function () {
     return view('divisi.index');
 });
 
-
 Route::get('/karyawan', function () {
     return view('karyawan.index');
 });
@@ -79,6 +78,9 @@ Route::post('/kategori', [KategoriController::class, 'store'])->name('kategori.s
 Route::get('/kategori/{id}/edit', [KategoriController::class, 'edit'])->name('kategori.edit');
 Route::put('/kategori/{id}', [KategoriController::class, 'update'])->name('kategori.update');
 Route::delete('/kategori/{id}', [KategoriController::class, 'destroy'])->name('kategori.destroy');
+Route::get('/kategori/{id}/print', [KategoriController::class, 'print'])->name('kategori.print');
+Route::get('/kategori/{id}/pdf', [KategoriController::class, 'pdf'])->name('kategori.pdf');
+Route::get('/kategori/{id}', [KategoriController::class, 'show'])->name('kategori.show');
 /*
 |--------------------------------------------------------------------------
 | end-Kategori Routes
@@ -87,16 +89,17 @@ Route::delete('/kategori/{id}', [KategoriController::class, 'destroy'])->name('k
 
 use App\Http\Controllers\DivisiController;
 
-Route::get('/divisi', [DivisiController::class, 'index'])->name('divisi.index');
-Route::get('/divisi/create', [DivisiController::class, 'create'])->name('divisi.create');
-Route::post('/divisi', [DivisiController::class, 'store'])->name('divisi.store');
-Route::get('/divisi/{id}/edit', [DivisiController::class, 'edit'])->name('divisi.edit');
-Route::put('/divisi/{id}', [DivisiController::class, 'update'])->name('divisi.update');
-Route::delete('/divisi/{id}', [DivisiController::class, 'destroy'])->name('divisi.destroy');
+// Resource route (sudah otomatis membuat index, create, store, show, edit, update, destroy)
+Route::resource('divisi', DivisiController::class);
+
+// Tambahan route khusus (print, pdf, import)
 Route::get('/divisi/{id}/print', [DivisiController::class, 'print'])->name('divisi.print');
 Route::get('/divisi/{id}/pdf', [DivisiController::class, 'pdf'])->name('divisi.pdf');
-Route::get('/divisi/{id}/show', [DivisiController::class, 'show'])->name('divisi.show');
-Route::resource('/divisi', DivisiController::class)->except(['index', 'show', 'create', 'edit']);
+Route::post('/divisi/import', [DivisiController::class, 'import'])->name('divisi.import');
+
+
+
+
 /*
 |--------------------------------------------------------------------------
 | end-Divisi Routes
@@ -119,6 +122,19 @@ Route::get('/karyawan/{id}', [KaryawanController::class, 'show'])->name('karyawa
 |--------------------------------------------------------------------------
 */
 
+
+use App\Http\Controllers\PeminjamanController;
+Route::resource('peminjaman', PeminjamanController::class);
+Route::get('/peminjaman/{id}/print', [PeminjamanController::class, 'print'])->name('peminjaman.print');
+Route::get('/peminjaman/{id}/pdf', [PeminjamanController::class, 'pdf'])->name('peminjaman.pdf');
+Route::post('/peminjaman/import', [PeminjamanController::class, 'import'])->name('peminjaman.import');
+
+/*
+|--------------------------------------------------------------------------
+| end-Peminjaman Routes
+|--------------------------------------------------------------------------
+*/
+
 use App\Http\Controllers\PengembalianController;
 Route::get('/pengembalian', [PengembalianController::class, 'index'])->name('pengembalian.index');
 Route::get('/pengembalian/create', [PengembalianController::class, 'create'])->name('pengembalian.create');
@@ -130,3 +146,4 @@ Route::get('/pengembalian/{id}/print', [PengembalianController::class, 'print'])
 Route::get('/pengembalian/{id}/pdf', [PengembalianController::class, 'pdf'])->name('pengembalian.pdf');
 Route::get('/pengembalian/{id}', [PengembalianController::class, 'show'])->name('pengembalian.show');
 Route::resource('/pengembalian', PengembalianController::class)->except(['index', 'show', 'create', 'edit']);
+

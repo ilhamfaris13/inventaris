@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Divisi;
 use Illuminate\Http\Request;
+use App\Import\DivisiImport;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Imports\YourImportClass;
 
 class DivisiController extends Controller
 {
@@ -12,11 +15,33 @@ class DivisiController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+     
+    public function __construct()
+    {
+        $this->middleware('auth'); // Middleware untuk memastikan pengguna terautentikasi
+    }
+
 public function index()
 {
     $divisi = Divisi::all(); // Fetch all divisions from the database
    // dd($divisi); // Debugging line to check the data fetched
     return view('divisi.index', compact('divisi'));
+}
+
+    /**
+     * Import data from an Excel file.
+     *
+     * @return \Illuminate\Http\Response
+     */
+public function import(Request $request)
+{
+    
+//dd ($file);
+    $file = $request->file('file');
+    Excel::import(new DivisiImport, $file);
+    
+
+    return back()->with('success', 'Data berhasil di-import!');
 }
 
     /**
@@ -38,19 +63,15 @@ public function index()
     public function store(Request $request)
     {
         $request->validate([
-            'kode_divisi' => 'required',
+            'kode_divisi' => 'required|unique:divisi,kode_divisi',
             'nama_divisi' => 'required',
             'deskripsi' => 'nullable',
-            'created_at' => 'required|date',
-            'updated_at' => 'required|date',
         ]);
         
         Divisi::create([
             'kode_divisi' => $request->kode_divisi,
             'nama_divisi' => $request->nama_divisi,
             'deskripsi' => $request->deskripsi,
-            'created_at' => $request->created_at,
-            'updated_at' => $request->updated_at,
         ]);
         return redirect()->route('divisi.index')->with('success', 'Divisi created successfully.');
         // Simpan data ke database
@@ -74,12 +95,14 @@ public function index()
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
-    {
+{
+    try {
         $divisi = Divisi::findOrFail($id);
-        //dd($divisi); // Debugging line to check the data fetched
         return view('divisi.edit', compact('divisi'));
-
+    } catch (\Exception $e) {
+        return redirect()->route('divisi.index')->with('error', 'Data Divisi tidak ditemukan.');
     }
+}
 
     /**
      * Update the specified resource in storage.
@@ -91,22 +114,16 @@ public function index()
     public function update(Request $request, $id)
     {
         $request->validate([
-            'id_divisi' => 'required',
-            'kode_divisi' => 'required',
+            'kode_divisi' => 'required|unique:divisi,kode_divisi,' . $id,
             'nama_divisi' => 'required',
             'deskripsi' => 'nullable',
-            'created_at' => 'required|date',
-            'updated_at' => 'required|date',
         ]);
     
         $divisi = Divisi::findOrFail($id); // Ambil data berdasarkan ID
         $divisi->update([
-            'id_divisi' => $request->id_divisi,
             'kode_divisi' => $request->kode_divisi,
             'nama_divisi' => $request->nama_divisi,
             'deskripsi' => $request->deskripsi,
-            'created_at' => $request->created_at,
-            'updated_at' => $request->updated_at,
         ]);
     
         return redirect()->route('divisi.index')->with('success', 'Divisi berhasil diperbarui.');
@@ -118,10 +135,13 @@ public function index()
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
-{
-    $divisi = Divisi::findOrFail($id); // Cari data berdasarkan ID
-    $divisi->delete(); // Hapus data dari database
-
-    return redirect()->route('divisi.index')->with('success', 'Divisi berhasil dihapus.');
-}
+    {
+        try {
+            $divisi = Divisi::findOrFail($id);
+            $divisi->delete();
+            return redirect()->route('divisi.index')->with('success', 'Divisi berhasil dihapus.');
+        } catch (\Exception $e) {
+            return redirect()->route('divisi.index')->with('error', 'Data Divisi tidak ditemukan.');
+        }
+    }
 }

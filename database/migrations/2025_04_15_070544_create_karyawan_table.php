@@ -1,37 +1,23 @@
 <?php
-
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
+class AddPosisiToKaryawanTable extends Migration
 {
-    /**
-     * Run the migrations.
-     *
-     * @return void
-     */
     public function up()
     {
-        Schema::create('karyawan', function (Blueprint $table) {
-            $table->id();
-            $table->string('nama');
-            $table->string('alamat');
-            $table->string('tanggal_lahir');
-            $table->string('posisi');
-            $table->decimal('gaji', 10, 2);
-            $table->date('tanggal_masuk');
-            $table->timestamps();
+        Schema::table('karyawan', function (Blueprint $table) {
+            $table->unsignedBigInteger('posisi')->after('tanggal_lahir');
+            $table->foreign('posisi')->references('id')->on('divisi')->onDelete('cascade');
         });
     }
 
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
     public function down()
     {
-        Schema::dropIfExists('karyawan');
+        Schema::table('karyawan', function (Blueprint $table) {
+            $table->dropForeign(['posisi']);
+            $table->dropColumn('posisi');
+        });
     }
-};
+}

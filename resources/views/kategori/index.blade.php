@@ -16,6 +16,8 @@
                 <th>No</th>
                 <th>Nama Kategori</th>
                 <th>Deskripsi</th>
+                <th>Created At</th>
+                <th>Updated At</th>
                 <th>Aksi</th>
             </tr>
         </thead>
@@ -25,11 +27,10 @@
                     <td>{{ $key + 1 }}</td>
                     <td>{{ $item->nama_kategori }}</td>
                     <td>{{ $item->deskripsi ?? '-' }}</td>
+                    <td>{{ $item->created_at }}</td>
+                    <td>{{ $item->updated_at }}</td>
                     <td>
                         <a href="{{ route('kategori.edit', $item->id) }}" class="btn btn-warning btn-sm">Edit</a>
-                        <form action="{{ route('kategori.show', $item->id) }}" method="GET" class="d-inline">
-                            @csrf
-                            <button type="submit" class="btn btn-info btn-sm">Detail</button>
                         
                         <form action="{{ route('kategori.destroy', $item->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Yakin ingin menghapus kategori ini?')">
                             @csrf
