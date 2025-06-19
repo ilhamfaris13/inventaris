@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Pengembalian;
+use App\Imports\PengembalianImport;
+use Maatwebsite\Excel\Facades\Excel;
 use App\Models\Peminjaman;
 use Illuminate\Http\Request;
 
@@ -13,12 +15,26 @@ class PengembalianController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
     public function index()
     {
         $pengembalian = Pengembalian::with(['peminjaman.karyawan', 'peminjaman.barang'])->get();
         return view('pengembalian.index', compact('pengembalian'));
 
     }
+    public function import(Request $request)
+{
+    $request->validate([
+        'file' => 'required|mimes:xlsx,xls,csv'
+    ]);
+//dd($request->file('file'));
+    Excel::import(new PengembalianImport, $request->file('file'));
+
+    return redirect()->back()->with('success', 'Data berhasil diimport!');
+}
 
     /**
      * Show the form for creating a new resource.
@@ -62,7 +78,7 @@ class PengembalianController extends Controller
      */
     public function show(Pengembalian $pengembalian)
     {
-        return view('pengembalian.show', compact('pengembalian'));
+        return view('pengembalian.show', compact('pengembalian', 'peminjaman'));
     }
 
     /**

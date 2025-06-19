@@ -98,3 +98,7 @@ Route::get('/pengembalian/{id}/print', [PengembalianController::class, 'print'])
 Route::get('/pengembalian/{id}/pdf', [PengembalianController::class, 'pdf'])->name('pengembalian.pdf');
 Route::get('/pengembalian/{id}', [PengembalianController::class, 'show'])->name('pengembalian.show');
 Route::resource('/pengembalian', PengembalianController::class)->except(['index', 'show', 'create', 'edit']);
+Route::post('/pengembalian/import', [\App\Http\Controllers\PengembalianController::class, 'import'])->name('pengembalian.import');
+Route::post('/pengembalian/import', [PengembalianController::class, 'import'])->name('pengembalian.import');
+
+

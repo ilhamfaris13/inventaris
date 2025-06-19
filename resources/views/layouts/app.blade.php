@@ -6,6 +6,7 @@
   <title>AdminLTE 3 | Dashboard</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  
   <!-- Font Awesome -->
   <link rel="stylesheet" href="../plugins/fontawesome-free/css/all.min.css">
   <!-- Ionicons -->
@@ -105,6 +106,48 @@
     <!-- Content Header (Page header) -->
     <div class="content-header">
       <div class="container-fluid">
+  <style>
+    body {
+      background-color:rgb(255, 217, 235);
+    }
+    .main-sidebar {
+      background-color:rgb(255, 155, 205) !important;
+    }
+    .brand-link {
+      background-color:rgb(117, 31, 65) !important;
+      color: white !important;
+    }
+    .brand-link:hover {
+      background-color:rgb(255, 145, 189) !important;
+    }
+    .nav-sidebar .nav-link {
+      color: white !important;
+    }
+    .nav-sidebar .nav-link.active {
+      background-color: #ff99cc !important;
+      color: white !important;
+    }
+    .content-wrapper {
+      background-color: #fff0f5;
+    }
+    .btn-primary {
+      background-color: #ff66b3 !important;
+      border-color: #ff66b3 !important;
+    }
+    .btn-primary:hover {
+      background-color: #ff4d94 !important;
+      border-color: #ff4d94 !important;
+    }
+    .alert-success {
+      background-color: #ffb3d9;
+      color: #800040;
+      border: 1px solid #ff66b3;
+    }
+    footer.main-footer {
+      background-color: #ff99cc;
+      color: white;
+    }
+  </style>
         <div class="row mb-2">
           <div class="col-sm-6">
             <h1 class="m-0 text-dark">Dashboard</h1>
