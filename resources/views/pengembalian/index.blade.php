@@ -1,6 +1,24 @@
 @extends('layouts.app')
 
 @section('content')
+<form action="{{ route('pengembalian.import') }}" method="POST" enctype="multipart/form-data">
+    @csrf
+    <input type="file" name="file" required class="form-control mb-2">
+    <button class="btn btn-success">Import Excel</button>
+    @if (session('success'))
+        <div class="alert alert-success">{{ session('success') }}</div>
+    @endif
+    @if($errors->any())
+    <div class="alert alert-danger">
+        <ul>
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif
+
+</form>
 <div class="container">
     <h2>Data Pengembalian</h2>
 

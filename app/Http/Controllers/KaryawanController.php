@@ -15,8 +15,13 @@ class KaryawanController extends Controller
      */
     public function __construct()
     {
+
+        $this->middleware('auth');
+    }
+
         $this->middleware('auth'); // Middleware untuk memastikan pengguna terautentikasi
     }
+
 
 public function index()
 {
