@@ -37,7 +37,6 @@
                 <td>{{ $item->tanggal_masuk }}</td>
                 <td>
                     <a href="{{ route('barang.edit', $item->id) }}" class="btn btn-warning btn-sm">Edit</a>
-                    <a href="{{ route('barang.show', $item->id) }}" class="btn btn-info btn-sm">Detail</a>
                     <form action="{{ route('barang.destroy', $item->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Apakah Anda yakin ingin menghapus barang ini?')">
                         @csrf
                         @method('DELETE')

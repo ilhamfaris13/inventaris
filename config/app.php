@@ -1,5 +1,4 @@
 <?php
-
 use Illuminate\Support\Facades\Facade;
 
 return [
@@ -186,6 +185,7 @@ return [
         /*
          * Package Service Providers...
          */
+        Maatwebsite\Excel\ExcelServiceProvider::class,
 
         /*
          * Application Service Providers...
@@ -213,6 +213,9 @@ return [
 
     'aliases' => Facade::defaultAliases()->merge([
         // 'ExampleClass' => App\Example\ExampleClass::class,
+
+        'App' => Illuminate\Support\Facades\App::class,
+
         'Excel' => Maatwebsite\Excel\Facades\Excel::class,
     ])->toArray(),
 

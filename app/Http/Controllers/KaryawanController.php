@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Karyawan;
+use App\Models\Divisi;
 use Illuminate\Http\Request;
 
 class KaryawanController extends Controller
@@ -14,8 +15,14 @@ class KaryawanController extends Controller
      */
     public function __construct()
     {
+
         $this->middleware('auth');
     }
+
+        $this->middleware('auth'); // Middleware untuk memastikan pengguna terautentikasi
+    }
+
+
 public function index()
 {
     $karyawans = Karyawan::all(); // Fetch all data from the Karyawan model
@@ -29,7 +36,8 @@ public function index()
      */
     public function create()
     {
-        return view('karyawan.create');
+        $divisi = Divisi::all(); // Ambil semua data divisi
+        return view('karyawan.create', compact('divisi')); // Kirim data divisi ke view
     }
 
     /**
@@ -39,16 +47,27 @@ public function index()
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    {
-       // dd($request->all());
-       $validatedData = $request->validate([
+{
+    $request->validate([
         'nama' => 'required|string|max:255',
-        'alamat' => 'nullable|string',
+        'alamat' => 'required|string',
         'tanggal_lahir' => 'required|date',
-        'posisi' => 'nullable|string',
-        'gaji' => 'required|numeric',
+        'posisi' => 'required|exists:divisi,id', // Validasi posisi harus ada di tabel Divisi
+        'gaji' => 'required|numeric|min:0',
         'tanggal_masuk' => 'required|date',
     ]);
+
+    Karyawan::create([
+        'nama' => $request->nama,
+        'alamat' => $request->alamat,
+        'tanggal_lahir' => $request->tanggal_lahir,
+        'posisi' => $request->posisi, // Simpan ID divisi
+        'gaji' => str_replace(',', '', $request->gaji),
+        'tanggal_masuk' => $request->tanggal_masuk,
+    ]);
+
+    return redirect()->route('karyawan.index')->with('success', 'Karyawan berhasil ditambahkan.');
+
     
             //dd($request);
             // Create a new karyawan instance and fill it with validated data
@@ -62,7 +81,7 @@ public function index()
             
             // Save the karyawan instance to the database
 
-    Karyawan::create($validatedData);
+            $karyawan->save();
         
         // Save the karyawan data to the database
         return redirect()->route('karyawan.index')->with('success', 'Karyawan created successfully.');
@@ -108,11 +127,20 @@ public function index()
             'alamat' => 'required|string|max:255',
             'tanggal_lahir' => 'required|date',
             'posisi' => 'required|integer',
-            'gaji' => 'required|numeric',
+            'gaji' => 'required|numeric|min:0',
+            'tanggal_masuk' => 'required|date',
         ]);
 
-        //dd($request->all());
-        $karyawan->update($request->all());
+        $karyawan = Karyawan::findOrFail($id);
+        $karyawan->update([
+            'nama' => $request->nama,
+            'alamat' => $request->alamat,
+            'tanggal_lahir' => $request->tanggal_lahir,
+            'posisi' => $request->posisi,
+            'gaji' => str_replace(',', '', $request->gaji), // Hapus tanda koma sebelum menyimpan
+            'tanggal_masuk' => $request->tanggal_masuk,
+        ]);
+    
 
         return redirect()->route('karyawan.index')->with('success', 'Karyawan updated successfully.');
     }

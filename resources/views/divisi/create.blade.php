@@ -2,9 +2,9 @@
 
 @section('content')
 <div class="container">
-    <h2 class="mb-4">Tambah Kategori</h2>
+    <h2 class="mb-4">Tambah Divisi</h2>
 
-    <form action="{{ route('kategori.store') }}" method="POST">
+    <form action="{{ route('divisi.store') }}" method="POST">
         @csrf
         @if (session('success'))
             <div class="alert alert-success">{{ session('success') }}</div>
@@ -21,20 +21,19 @@
                 </ul>
             </div>
         @endif
-
         <div class="mb-3">
-            <label for="id" class="form-label">ID</label>
-            <input type="text" name="id" class="form-control" required>
+            <label for="id_divisi" class="form-label">ID Divisi</label>
+            <input type="text" name="id_divisi" class="form-control" required> 
         </div>
 
         <div class="mb-3">
-            <label for="nama_kategori" class="form-label">Nama Kategori</label>
-            <select name="nama_kategori" class="form-control" required>
-                <option value="">Pilih Kategori</option>
-                <option value="Makanan">Makanan</option>
-                <option value="Minuman">Minuman</option>
-                <option value="Barang">Barang</option>
-            </select>
+            <label for="kode_divisi" class="form-label">Kode Divisi</label>
+            <input type="text" name="kode_divisi" class="form-control" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="nama_divisi" class="form-label">Nama Divisi</label>
+            <input type="text" name="nama_divisi" class="form-control" required>
         </div>
 
         <div class="mb-3">
@@ -53,7 +52,7 @@
         </div>
 
         <button type="submit" class="btn btn-primary">Simpan</button>
-        <a href="{{ route('kategori.index') }}" class="btn btn-secondary">Kembali</a>
+        <a href="{{ route('divisi.index') }}" class="btn btn-secondary">Kembali</a>
     </form>
 </div>
 @endsection
