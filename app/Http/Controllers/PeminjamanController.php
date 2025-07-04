@@ -68,25 +68,24 @@ try {
     public function store(Request $request)
 {
     $request->validate([
-        'id' => 'required|unique:peminjaman,id',
+       
         'karyawan_id' => 'required|exists:karyawan,id',
         'barang_id' => 'required|exists:barang,id',
         'jumlah' => 'required|integer|min:1',
         'tanggal_pinjam' => 'required|date',
         'tanggal_kembali' => 'required|date|after_or_equal:tanggal_pinjam',
-        'status' => 'required|in:pinjam,kembali',
-        'created_at' => 'required|date',
-        'updated_at' => 'required|date',
+        
+       
     ]);
 
     Peminjaman::create([
-        'id' => $request->id,
+       
         'karyawan_id' => $request->karyawan_id,
         'barang_id' => $request->barang_id,
         'jumlah' => $request->jumlah,
         'tanggal_pinjam' => $request->tanggal_pinjam,
         'tanggal_kembali' => $request->tanggal_kembali,
-        'status' => $request->status,
+       
     ]);
 
     return redirect()->route('peminjaman.index')->with('success', 'Data peminjaman berhasil disimpan.');
