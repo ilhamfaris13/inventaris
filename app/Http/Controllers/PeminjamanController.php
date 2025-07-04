@@ -43,11 +43,18 @@ try {
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
-        $barang = Barang::all(); // Fetch all barang for the dropdown
+        $barangAll = Barang::all(); // Fetch all barang for the dropdown
         $karyawan = Karyawan::all(); // Fetch all karyawan for the dropdown
-        return view('peminjaman.create', compact('barang',  'karyawan')); // Pass the data to the view
+        $barang = null;
+
+    if ($request->has('barang_id')) {
+        $barang = Barang::find($request->barang_id);
+    }
+
+    //return view('peminjaman.create', compact('barang'));
+        return view('peminjaman.create', compact('barang',  'karyawan','barangAll')); // Pass the data to the view
     // Return the view for creating a new peminjaman
 
     }

@@ -45,24 +45,36 @@ class BarangController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request) // Menambahkan parameter request
+    public function store(Request $request)
     {
-        $request->validate([
-            'kode_barang' => 'required|unique:barang,kode_barang|max:50', // Menambahkan validasi kode_barang dan unik di tabel barang
-            'nama_barang' => 'required|max:100', // Menambahkan validasi nama_barang dan maksimal 100 karakter
-            'kategori_id' => 'nullable|exists:kategori,id', // Menambahkan validasi kategori_id dan relasi ke tabel kategori
-            'spesifikasi' => 'nullable|string', // Menambahkan validasi spesifikasi dan tipe data string
-            'jumlah' => 'required|integer|min:1', // Menambahkan validasi jumlah dan minimal 1
-            'kondisi' => 'required|in:baik,rusak,diperbaiki', // Menambahkan validasi kondisi dan pilihan baik, rusak, diperbaiki
-            'lokasi' => 'nullable|string|max:100', // Menambahkan validasi lokasi dan maksimal 100 karakter 
-            'kepemilikan_id' => 'nullable|exists:divisi,id', // Menambahkan validasi kepemilikan_id dan relasi ke tabel divisi
-            'tanggal_masuk' => 'required|date', // Menambahkan validasi tanggal_masuk dan tipe data date
+        // 1. Validasi semua data termasuk foto
+        $validated = $request->validate([
+            'kode_barang' => 'required|unique:barang,kode_barang|max:50',
+            'nama_barang' => 'required|max:100',
+            'kategori_id' => 'nullable|exists:kategori,id',
+            'spesifikasi' => 'nullable|string',
+            'jumlah' => 'required|integer|min:1',
+            'kondisi' => 'required|in:baik,rusak,diperbaiki',
+            'lokasi' => 'nullable|string|max:100',
+            'kepemilikan_id' => 'nullable|exists:divisi,id',
+            'tanggal_masuk' => 'required|date',
+            'foto' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:5120',
         ]);
-
-        Barang::create($request->all()); // Menambahkan data barang ke tabel barang dengan data dari request 
-
-        return redirect()->route('barang.index')->with('success', 'Barang berhasil ditambahkan!'); // Redirect ke halaman index barang dengan pesan sukses 
+    
+        // 2. Cek dan simpan file foto jika ada
+        if ($request->hasFile('foto')) {
+            $file = $request->file('foto');
+            $filename = time() . '_' . $file->getClientOriginalName();
+            $file->move(public_path('uploads/barang'), $filename);
+            $validated['foto'] = 'uploads/barang/' . $filename;
+        }
+    
+        // 3. Simpan data ke DB
+        Barang::create($validated);
+    
+        return redirect()->route('barang.index')->with('success', 'Barang berhasil ditambahkan!');
     }
+    
 
     /**
      * Display the specified resource.
@@ -100,7 +112,7 @@ class BarangController extends Controller
     public function update(Request $request, $id) // Menambahkan parameter request dan id 
     {
         $barang = Barang::findOrFail($id); // Mengambil data barang berdasarkan id
-
+        //dd($request->all()); // Debugging untuk melihat data request yang diterima
     $request->validate([
         'kode_barang' => 'required|max:50|unique:barang,kode_barang,' . $id, // Menambahkan validasi kode_barang dan unik di tabel barang kecuali id yang sedang diedit 
         'nama_barang' => 'required|max:100', // Menambahkan validasi nama_barang dan maksimal 100 karakter 
@@ -111,10 +123,21 @@ class BarangController extends Controller
         'lokasi' => 'nullable|string|max:100', // Menambahkan validasi lokasi dan maksimal 100 karakter 
         'kepemilikan_id' => 'nullable|exists:divisi,id', // Menambahkan validasi kepemilikan_id dan relasi ke tabel divisi
         'tanggal_masuk' => 'required|date', // Menambahkan validasi tanggal_masuk dan tipe data date
+        'foto' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:5120', // Menambahkan validasi foto dengan tipe gambar dan ukuran maksimal 2MB
     ]);
+    if ($request->hasFile('foto')) {
+        $file = $request->file('foto');
+        $filename = time() . '_' . $file->getClientOriginalName();
 
-    $barang->update($request->all()); // Mengupdate data barang dengan data dari request 
+        // Simpan di public/uploads/barang
+        $file->move(public_path('uploads/barang'), $filename);
 
+        // Simpan path relatif ke database
+        $validated['foto'] = 'uploads/barang/' . $filename;
+    }
+
+    //$barang->update($request->all()); // Mengupdate data barang dengan data dari request 
+    $barang->update($validated);
     return redirect()->route('barang.index')->with('success', 'Barang berhasil diperbarui!'); // Redirect ke halaman index barang dengan pesan sukses
     }
 
@@ -131,4 +154,20 @@ class BarangController extends Controller
     
         return redirect()->route('barang.index')->with('success', 'Barang berhasil dihapus!'); // Redirect ke halaman index barang dengan pesan sukses
     }
+    public function scan()
+{
+    return view('barang.scan');
+}
+
+public function scanResult(Request $request)
+{
+    $request->validate([
+        'kode_barang' => 'required'
+    ]);
+
+    $barang = Barang::where('kode_barang', $request->kode_barang)->first();
+
+    return view('barang.scan', compact('barang'));
+}
+
 }

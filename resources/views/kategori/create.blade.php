@@ -22,19 +22,11 @@
             </div>
         @endif
 
-        <div class="mb-3">
-            <label for="id" class="form-label">ID</label>
-            <input type="text" name="id" class="form-control" required>
-        </div>
+        
 
         <div class="mb-3">
             <label for="nama_kategori" class="form-label">Nama Kategori</label>
-            <select name="nama_kategori" class="form-control" required>
-                <option value="">Pilih Kategori</option>
-                <option value="Makanan">Makanan</option>
-                <option value="Minuman">Minuman</option>
-                <option value="Barang">Barang</option>
-            </select>
+            <input name="nama_kategori" class="form-control" required>
         </div>
 
         <div class="mb-3">
@@ -42,15 +34,7 @@
             <textarea name="deskripsi" class="form-control"></textarea>
         </div>
 
-        <div class="mb-3">
-            <label for="created_at" class="form-label">Created At</label>
-            <input type="datetime-local" name="created_at" class="form-control" required>
-        </div>
-
-        <div class="mb-3">
-            <label for="updated_at" class="form-label">Updated At</label>
-            <input type="datetime-local" name="updated_at" class="form-control" required>
-        </div>
+       
 
         <button type="submit" class="btn btn-primary">Simpan</button>
         <a href="{{ route('kategori.index') }}" class="btn btn-secondary">Kembali</a>

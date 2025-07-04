@@ -18,11 +18,11 @@ class KaryawanController extends Controller
 
         $this->middleware('auth');
     }
-
-        $this->middleware('auth'); // Middleware untuk memastikan pengguna terautentikasi
-    }
-
-
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
 public function index()
 {
     $karyawans = Karyawan::all(); // Fetch all data from the Karyawan model

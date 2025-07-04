@@ -14,7 +14,7 @@
         </div>
     @endif
 
-    <form action="{{ route('barang.store') }}" method="POST">
+    <form action="{{ route('barang.store') }}" method="POST" enctype="multipart/form-data">
         @csrf
         <div class="mb-3">
             <label for="kode_barang" class="form-label">Kode Barang</label>
@@ -74,9 +74,19 @@
             <label for="tanggal_masuk" class="form-label">Tanggal Masuk</label>
             <input type="date" class="form-control" id="tanggal_masuk" name="tanggal_masuk" required>
         </div>
+        <div class="mb-3">
+            <label for="foto" class="form-label">Foto Barang</label>
+            <input type="file" name="foto" class="form-control">
+        </div>
+        
 
         <button type="submit" class="btn btn-primary">Simpan</button>
         <a href="{{ route('barang.index') }}" class="btn btn-secondary">Kembali</a>
     </form>
 </div>
 @endsection
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        document.getElementById('kode_barang').focus();
+    });
+</script>

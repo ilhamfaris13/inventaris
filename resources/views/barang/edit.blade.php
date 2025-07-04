@@ -14,7 +14,7 @@
         </div>
     @endif
 
-    <form action="{{ route('barang.update', $barang->id) }}" method="POST">
+    <form action="{{ route('barang.update', $barang->id) }}" method="POST" enctype="multipart/form-data">
         @csrf
         @method('PUT')
 
@@ -76,9 +76,19 @@
             <label for="tanggal_masuk" class="form-label">Tanggal Masuk</label>
             <input type="date" class="form-control" id="tanggal_masuk" name="tanggal_masuk" value="{{ $barang->tanggal_masuk }}" required>
         </div>
-
+        <div class="mb-3">
+            <label for="foto" class="form-label">Foto Barang</label>
+            <input type="file" class="form-control" id="foto" name="foto">
+            @if ($barang->foto)
+    <img src="{{ asset($barang->foto) }}" alt="Foto" width="100">
+@else
+    <em>Tidak ada foto</em>
+@endif
         <button type="submit" class="btn btn-primary">Update</button>
         <a href="{{ route('barang.index') }}" class="btn btn-secondary">Kembali</a>
     </form>
+    @error('foto')
+  <div class="text-danger">{{ $message }}</div>
+@enderror
 </div>
 @endsection

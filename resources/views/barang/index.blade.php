@@ -19,6 +19,7 @@
                 <th>Lokasi</th>
                 <th>Kepemilikan</th>
                 <th>Tanggal Masuk</th>
+                <th>Foto</th>
                 <th>Aksi</th>
             </tr>
         </thead>
@@ -35,6 +36,13 @@
                 <td>{{ $item->lokasi }}</td>
                 <td>{{ $item->divisi->nama_divisi ?? 'Tidak Ada' }}</td>
                 <td>{{ $item->tanggal_masuk }}</td>
+                <td>
+                    @if($item->foto)
+                        <img src="{{ asset($item->foto) }}" alt="Foto" width="80">
+                    @else
+                        <small>Tidak ada foto</small>
+                    @endif
+                </td>
                 <td>
                     <a href="{{ route('barang.edit', $item->id) }}" class="btn btn-warning btn-sm">Edit</a>
                     <form action="{{ route('barang.destroy', $item->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Apakah Anda yakin ingin menghapus barang ini?')">

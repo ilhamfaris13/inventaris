@@ -22,11 +22,6 @@
             </div>
         @endif
         <div class="mb-3">
-            <label for="id_divisi" class="form-label">ID Divisi</label>
-            <input type="text" name="id_divisi" class="form-control" required> 
-        </div>
-
-        <div class="mb-3">
             <label for="kode_divisi" class="form-label">Kode Divisi</label>
             <input type="text" name="kode_divisi" class="form-control" required>
         </div>
@@ -40,17 +35,6 @@
             <label for="deskripsi" class="form-label">Deskripsi</label>
             <textarea name="deskripsi" class="form-control"></textarea>
         </div>
-
-        <div class="mb-3">
-            <label for="created_at" class="form-label">Created At</label>
-            <input type="datetime-local" name="created_at" class="form-control" required>
-        </div>
-
-        <div class="mb-3">
-            <label for="updated_at" class="form-label">Updated At</label>
-            <input type="datetime-local" name="updated_at" class="form-control" required>
-        </div>
-
         <button type="submit" class="btn btn-primary">Simpan</button>
         <a href="{{ route('divisi.index') }}" class="btn btn-secondary">Kembali</a>
     </form>

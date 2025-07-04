@@ -21,10 +21,7 @@
                 </ul>
             </div>
         @endif
-        <div class="mb-3">
-            <label for="id" class="form-label">ID</label>
-            <input type="text" name="id" class="form-control" required>
-        </div>
+      
 
         <div class="mb-3">
             <label for="karyawan_id" class="form-label">Karyawan ID</label>
@@ -39,10 +36,12 @@
         <div class="mb-3">
             <label for="barang_id" class="form-label">Barang ID</label>
             <select name="barang_id" class="form-control" required>
-                <option value="">Pilih Barang</option>
-                @foreach ($barang as $brg)
+                <option value="{{ $barang->id }}">{{ $barang->nama_barang }}</option>
+                @foreach ($barangAll as $brg)
                     <option value="{{ $brg->id }}">{{ $brg->nama_barang }}</option>
                 @endforeach
+                   
+                
             </select>
         </div>
 

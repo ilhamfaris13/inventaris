@@ -150,5 +150,7 @@ Route::resource('/pengembalian', PengembalianController::class)->except(['index'
 Route::post('/pengembalian/import', [\App\Http\Controllers\PengembalianController::class, 'import'])->name('pengembalian.import');
 Route::post('/pengembalian/import', [PengembalianController::class, 'import'])->name('pengembalian.import');
 
+Route::get('/scan-barang', [BarangController::class, 'scan'])->name('barang.scan');
+Route::post('/scan-barang', [BarangController::class, 'scanResult'])->name('barang.scan.result');
 
 
