@@ -85,7 +85,7 @@ try {
         'jumlah' => $request->jumlah,
         'tanggal_pinjam' => $request->tanggal_pinjam,
         'tanggal_kembali' => $request->tanggal_kembali,
-        'status' => $request->status,
+       
     ]);
 
     return redirect()->route('peminjaman.index')->with('success', 'Data peminjaman berhasil disimpan.');
