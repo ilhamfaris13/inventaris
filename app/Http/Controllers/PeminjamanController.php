@@ -34,8 +34,8 @@ try {
 }
     public function index()
     {
-        $peminjaman = Peminjaman::all(); // Ambil semua data peminjaman
-        return view('peminjaman.index', compact('peminjaman')); // Kirim data ke view
+        $peminjaman = Peminjaman::with(['karyawan', 'barang'])->get();
+        return view('peminjaman.index', compact('peminjaman'));
     }
 
     /**
@@ -68,19 +68,18 @@ try {
     public function store(Request $request)
 {
     $request->validate([
-        'id' => 'required|unique:peminjaman,id',
+       
         'karyawan_id' => 'required|exists:karyawan,id',
         'barang_id' => 'required|exists:barang,id',
         'jumlah' => 'required|integer|min:1',
         'tanggal_pinjam' => 'required|date',
         'tanggal_kembali' => 'required|date|after_or_equal:tanggal_pinjam',
-        'status' => 'required|in:pinjam,kembali',
-        'created_at' => 'required|date',
-        'updated_at' => 'required|date',
+        
+       
     ]);
 
     Peminjaman::create([
-        'id' => $request->id,
+       
         'karyawan_id' => $request->karyawan_id,
         'barang_id' => $request->barang_id,
         'jumlah' => $request->jumlah,
@@ -133,7 +132,7 @@ public function update(Request $request, $id)
         'jumlah' => 'required|integer|min:1',
         'tanggal_pinjam' => 'required|date',
         'tanggal_kembali' => 'required|date|after_or_equal:tanggal_pinjam',
-        'status' => 'required|in:pinjam,kembali',
+       
     ]);
 
     $peminjaman = Peminjaman::findOrFail($id);

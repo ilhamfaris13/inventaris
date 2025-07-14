@@ -63,20 +63,12 @@
         <div class="mb-3">
             <label for="status" class="form-label">Status</label>
             <select name="status" class="form-control" required>
-                <option value="pinjam">Pinjam</option>
-                <option value="kembali">Kembali</option>
+                <option value="dipinjam">Pinjam</option>
+                <option value="dikembalikan">Kembali</option>
             </select>
         </div>
 
-        <div class="mb-3">
-            <label for="created_at" class="form-label">Created At</label>
-            <input type="datetime-local" name="created_at" class="form-control" required>
-        </div>
-
-        <div class="mb-3">
-            <label for="updated_at" class="form-label">Updated At</label>
-            <input type="datetime-local" name="updated_at" class="form-control" required>
-        </div>
+       
 
         <button type="submit" class="btn btn-primary">Simpan</button>
         <a href="{{ route('peminjaman.index') }}" class="btn btn-secondary">Kembali</a>

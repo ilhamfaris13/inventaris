@@ -27,4 +27,18 @@ class Barang extends Model
     public function maintenance() {
         return $this->hasMany(Maintenance::class, 'barang_id');
     }
+    public function stokTransaksi()
+{
+    return $this->hasMany(StokTransaksi::class);
+}
+
+// Menampilkan stok saat ini (bisa dipakai di controller atau view)
+public function getStokAktualAttribute()
+{
+    $masuk = $this->stokTransaksi()->where('tipe', 'masuk')->sum('jumlah');
+    $keluar = $this->stokTransaksi()->where('tipe', 'keluar')->sum('jumlah');
+    $penyesuaian = $this->stokTransaksi()->where('tipe', 'penyesuaian')->sum('jumlah');
+
+    return $this->jumlah + $masuk - $keluar + $penyesuaian;
+}
 }

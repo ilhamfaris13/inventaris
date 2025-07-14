@@ -103,44 +103,49 @@
     @endif
     
 
-    <table class="table table-bordered">
-        <thead>
+     <table class="table table-bordered table-striped">
+        <thead class="table-dark">
             <tr>
                 <th>No</th>
-                <th>Karyawan ID</th>
-                <th>Barang ID</th>
+                <th>Nama Karyawan</th>
+                <th>Nama Barang</th>
                 <th>Jumlah</th>
                 <th>Tanggal Pinjam</th>
                 <th>Tanggal Kembali</th>
                 <th>Status</th>
-                <th>Created At</th>
-                <th>Updated At</th>
                 <th>Aksi</th>
             </tr>
         </thead>
         <tbody>
-            @foreach ($peminjaman as $index => $pinjam)
+            @forelse ($peminjaman as $index => $item)
                 <tr>
                     <td>{{ $index + 1 }}</td>
-                    <td>{{ $pinjam->karyawan_id }}</td>
-                    <td>{{ $pinjam->barang_id }}</td>
-                    <td>{{ $pinjam->jumlah }}</td>
-                    <td>{{ $pinjam->tanggal_pinjam }}</td>
-                    <td>{{ $pinjam->tanggal_kembali }}</td>
-                    <td>{{ $pinjam->status }}</td>
-                    <td>{{ $pinjam->created_at }}</td>
-                    <td>{{ $pinjam->updated_at }}</td>
+                    <td>{{ $item->karyawan->nama ?? '-' }}</td>
+                    <td>{{ $item->barang->nama_barang ?? '-' }}</td>
+                    <td>{{ $item->jumlah }}</td>
+                    <td>{{ $item->tanggal_pinjam }}</td>
+                    <td>{{ $item->tanggal_kembali ?? '-' }}</td>
                     <td>
-                        <a href="{{ route('peminjaman.edit', $pinjam->id) }}" class="btn btn-warning btn-sm">Edit</a>
-                        <form action="{{ route('peminjaman.destroy', $pinjam->id) }}" method="POST" style="display:inline-block;">
+                        <span class="badge bg-{{ $item->status == 'dipinjam' ? 'warning' : 'success' }}">
+                            {{ ucfirst($item->status) }}
+                        </span>
+                    </td>
+                    <td>
+                        <a href="{{ route('peminjaman.show', $item->id) }}" class="btn btn-info btn-sm">Detail</a>
+                        <a href="{{ route('peminjaman.edit', $item->id) }}" class="btn btn-primary btn-sm">Edit</a>
+                        <form action="{{ route('peminjaman.destroy', $item->id) }}" method="POST" style="display:inline-block;" onsubmit="return confirm('Yakin ingin menghapus?')">
                             @csrf
                             @method('DELETE')
-                            <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Apakah Anda yakin ingin menghapus data ini?')">Hapus</button>
+                            <button class="btn btn-danger btn-sm">Hapus</button>
                         </form>
                     </td>
                 </tr>
-            @endforeach
+            @empty
+                <tr>
+                    <td colspan="8" class="text-center">Data belum tersedia</td>
+                </tr>
+            @endforelse
         </tbody>
-</table>
+    </table>
 </div>
 @endsection
